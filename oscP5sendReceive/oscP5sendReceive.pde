@@ -1,17 +1,12 @@
-/**
- * oscP5sendreceive by andreas schlegel
- * example shows how to send and receive osc messages.
- * oscP5 website at http://www.sojamo.de/oscP5
- */
- 
+import codeanticode.syphon.*;
 import oscP5.*;
 import netP5.*;
-  
+SyphonServer server;
 OscP5 oscP5;
 NetAddress myRemoteLocation;
 
 void setup() {
-  size(400,400);
+  size(400,400, P3D);
   frameRate(60);
   /* start oscP5, listening for incoming messages at port 12000 */
   oscP5 = new OscP5(this,10001);
@@ -24,6 +19,8 @@ void setup() {
    * send messages back to this sketch.
    */
   myRemoteLocation = new NetAddress("127.0.0.1",10001);
+  server = new SyphonServer(this, "Processing Syphon");
+
 }
 boolean messageReceived = false;
 
@@ -34,6 +31,7 @@ void draw() {
     ellipse(200,200,100,100);
     messageReceived = false;
   }
+  server.sendScreen();
 }
 
 void mousePressed() {
