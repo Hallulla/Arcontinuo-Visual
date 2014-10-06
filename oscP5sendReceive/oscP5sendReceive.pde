@@ -1,58 +1,67 @@
-/**
- * oscP5sendreceive by andreas schlegel
- * example shows how to send and receive osc messages.
- * oscP5 website at http://www.sojamo.de/oscP5
- */
- 
 import oscP5.*;
 import netP5.*;
-  
+import codeanticode.syphon.*;
+
+SyphonServer server;
 OscP5 oscP5;
 NetAddress myRemoteLocation;
+Blob[] blobs;
 
 void setup() {
-  size(400,400);
+  size(1024,768,P3D);
   frameRate(60);
-  /* start oscP5, listening for incoming messages at port 12000 */
   oscP5 = new OscP5(this,10001);
-  
-  /* myRemoteLocation is a NetAddress. a NetAddress takes 2 parameters,
-   * an ip address and a port number. myRemoteLocation is used as parameter in
-   * oscP5.send() when sending osc packets to another computer, device, 
-   * application. usage see below. for testing purposes the listening port
-   * and the port of the remote location address are the same, hence you will
-   * send messages back to this sketch.
-   */
   myRemoteLocation = new NetAddress("127.0.0.1",10001);
+  
+  server = new SyphonServer(this, "Processing Syphon");
+  
+  
+  blobs = new Blob[10];
+  for(int i = 0; i < blobs.length; i++)
+    blobs[i] = new Blob(i,0,new PVector(0,0,0),false);
 }
-boolean messageReceived = false;
 
 void draw() {
-  background(0);  
-  if(messageReceived){
-    fill(255);
-    ellipse(200,200,100,100);
-    messageReceived = false;
+  background(0);
+  for(int i = 0; i < 10;i++){
+    if(blobs[i].isActive){
+      fill(255);
+      ellipse(blobs[i].position.x*width,blobs[i].position.y*height,blobs[i].position.z*100f,blobs[i].position.z*100f);
+    }
   }
-}
-
-void mousePressed() {
-  /* in the following different ways of creating osc messages are shown by example */
-  //OscMessage myMessage = new OscMessage("/test");
   
-  //myMessage.add(123); /* add an int to the osc message */
-
-  /* send the message */
-  //oscP5.send(myMessage, myRemoteLocation); 
+  server.sendScreen();
 }
 
 
-/* incoming osc message are forwarded to the oscEvent method. */
 void oscEvent(OscMessage theOscMessage) {
-  /* print the address pattern and the typetag of the received OscMessage */
-  //print("### received an osc message.");
-  print(theOscMessage.addrPattern());
-  println(" "+theOscMessage.typetag());
-  messageReceived = true;
+  //print(theOscMessage.addrPattern());
+  //print(" "+theOscMessage.typetag());
+  
+  if(theOscMessage.checkAddrPattern("/updateBlob")){
+    if(theOscMessage.checkTypetag("ifffi")){
+      
+      int fingerID = theOscMessage.get(0).intValue();
+      float x = theOscMessage.get(1).floatValue();
+      float y = theOscMessage.get(2).floatValue();
+      float z = theOscMessage.get(3).floatValue();
+      int area = theOscMessage.get(4).intValue();
+      blobs[fingerID].isActive = true;
+      blobs[fingerID].position = new PVector(x,y,z);
+      blobs[fingerID].area = area;
+      //println(" "+fingerID+" ("+x+","+y+","+z+") "+area);
+    }
+  } else if(theOscMessage.checkAddrPattern("/addBlob")){
+    if(theOscMessage.checkTypetag("i")){
+      int fingerID = theOscMessage.get(0).intValue();
+      blobs[fingerID].isActive = true;
+    }
+  } else if(theOscMessage.checkAddrPattern("/removeBlob")){
+    if(theOscMessage.checkTypetag("i")){
+      int fingerID = theOscMessage.get(0).intValue();
+      blobs[fingerID].isActive = false;
+    }
+  }
   
 }
+
