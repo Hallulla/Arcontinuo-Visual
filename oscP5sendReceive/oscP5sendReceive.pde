@@ -1,6 +1,7 @@
+
+import codeanticode.syphon.*;
 import oscP5.*;
 import netP5.*;
-import codeanticode.syphon.*;
 
 SyphonServer server;
 OscP5 oscP5;
@@ -8,10 +9,14 @@ NetAddress myRemoteLocation;
 Blob[] blobs;
 
 void setup() {
+
   size(1024,768,P3D);
+
+
   frameRate(60);
   oscP5 = new OscP5(this,10001);
   myRemoteLocation = new NetAddress("127.0.0.1",10001);
+
   
   server = new SyphonServer(this, "Processing Syphon");
   
@@ -19,6 +24,7 @@ void setup() {
   blobs = new Blob[10];
   for(int i = 0; i < blobs.length; i++)
     blobs[i] = new Blob(i,0,new PVector(0,0,0),false);
+
 }
 
 void draw() {
@@ -29,7 +35,7 @@ void draw() {
       ellipse(blobs[i].position.x*width,blobs[i].position.y*height,blobs[i].position.z*100f,blobs[i].position.z*100f);
     }
   }
-  
+
   server.sendScreen();
 }
 
