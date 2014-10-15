@@ -75,7 +75,7 @@ void ShiftPoints(){
 void DrawEllipsesFromVolume(){
   for(int x = 0;x < pointsWidth; x++){
     for(int y = 0;y < pointsHeight; y++){
-      float zTranslate = points[x][y]*100;
+      float zTranslate = points[x][y]*20;
       translate(0,0,zTranslate);
       ellipse((x-(pointsWidth/2))*10,(y-(pointsHeight/2))*10,3,3);
       translate(0,0,-zTranslate);
