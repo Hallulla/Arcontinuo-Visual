@@ -31,6 +31,7 @@ void DrawRectangle(float w, float h) {
   translate(-width/2, -height/2);
 }
 void DrawCircles(float w, float h) {
+  translate(width/2 - w/2, height/2 - h/2);
   for (int i = 0; i < 10; i++) {
     if (blobs[i].isActive) {
       fill(0, 0, 0, 0);
@@ -45,16 +46,14 @@ void DrawCircles(float w, float h) {
       text((i+1), x+r*.5f, y+r*.7f);
     }
   }
+  translate(-(width/2 - w/2), -(height/2 - h/2));
 }
 void draw() {
   background(0);
   float w = 140;
   float h = w*5f;
   DrawRectangle(w, h);
-  translate(width/2 - w/2, height/2 - h/2);
   DrawCircles(w, h);
-  translate(-(width/2 - w/2), -(height/2 - h/2));
-
   server.sendScreen();
 }
 
