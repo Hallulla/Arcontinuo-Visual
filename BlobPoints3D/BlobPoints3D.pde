@@ -18,7 +18,7 @@ OscP5 oscP5;
 NetAddress myRemoteLocation;
 Blob[] blobs;
 
-
+int status = 0; 
 
 void setup() {
   size(1024,768,P3D);
@@ -36,49 +36,55 @@ void setup() {
   
   oscP5 = new OscP5(this,10001);
   myRemoteLocation = new NetAddress("127.0.0.1",10001);
-
-  
   server = new SyphonServer(this, "Processing Syphon");
-  
   
   blobs = new Blob[10];
   for(int i = 0; i < blobs.length; i++)
     blobs[i] = new Blob(i,0,new PVector(0,0,0),false);
 
 }
+
+float perspX = width/2, perspY = height/2;
+int drawPointsW = 18;
+
 int frame = 0;
 void draw() {
   background(0);
-  camera(mouseX,mouseY, (height/2) / tan(PI/6), width/2, height/2, 0, 0, 1, 0);
+  smooth();
+  if(status == 0){
+    perspX = lerp(perspX,width/2,1/60f);
+    perspY = lerp(perspY,height/2,1/60f);
+    drawPointsW = 18;
+  } else if(status == 1){
+    perspX = lerp(perspX,width,1/60f);
+    perspY = lerp(perspY,height/2,1/60f);
+    drawPointsW = 18;
+  } else if(status == 2){
+    perspX = lerp(perspX,0,1/60f);
+    perspY = lerp(perspY,0,1/60f);
+    drawPointsW = 18;
+  } else if(status == 3){
+    perspX = lerp(perspX,width/2,1/60f);
+    perspY = lerp(perspY,height/2,1/60f);
+    if(drawPointsW < pointsWidth){
+      drawPointsW ++;
+    } 
+
+  }
+  camera(perspX,perspY, (height/2) / tan(PI/6), width/2, height/2, 0, 0, 1, 0);
   translate(width/2, height/2, -100);
   float w = 140;
   float h = w*5f;
-  DrawFullEllipses(w,h);
+  DrawEllipses(w,h,drawPointsW);
   translate(-width/2, -height/2, -100);
   server.sendScreen();
   frame++;
 }
 
-void DrawFullEllipses(float w, float h){
-  /*
-  for (int i = 0; i < 10; i++) {
-    if (blobs[i].isActive) {
-      fill(0, 0, 0, 0);
-      stroke(255);
-      strokeWeight(4);
-      float x = blobs[i].position.x*w -w/2;
-      float y = blobs[i].position.y*h -h/2;
-      float r = blobs[i].position.z*100f;
-      ellipse(x, y, r, r);
-      textSize(16);
-      fill(255);
-      text((i+1), x+r*.5f, y+r*.7f);
-    }
-  }*/
-  
+void DrawEllipses(float w, float h, int drawPointsWidth){
   noStroke();
   fill(255);
-  for(int x = 0;x < pointsWidth; x++){
+  for(int x = pointsWidth/2 - drawPointsWidth/2;x < pointsWidth/2 + drawPointsWidth/2; x++){
     for(int y = 0;y < pointsHeight; y++){
       float xPoint = (x-(pointsWidth/2))*10;
       float yPoint = (y-(pointsHeight/2))*10;
@@ -96,13 +102,12 @@ void DrawFullEllipses(float w, float h){
           }
         }
       }
+      float zTranslatePress = (maxBlobIndex != -1) ? -maxPress : 0;
+      float zTranslateCurve = -pow((y-35)*.2f,2f);
+      translate(0,0,zTranslatePress+zTranslateCurve);
       
-      float zTranslate = (maxBlobIndex != -1) ? -maxPress : 0;
-      
-      
-      translate(0,0,zTranslate);
       ellipse((x-(pointsWidth/2))*10,(y-(pointsHeight/2))*10,3,3);
-      translate(0,0,-zTranslate);
+      translate(0,0,-zTranslatePress-zTranslateCurve);
     }
   }
 }
@@ -131,22 +136,15 @@ void oscEvent(OscMessage theOscMessage) {
   //print(" "+theOscMessage.typetag());
   
   if(theOscMessage.checkAddrPattern("/updateBlob")){
-    if(theOscMessage.checkTypetag("ifffi")){
-      
+    if(theOscMessage.checkTypetag("ifffi") || theOscMessage.checkTypetag("iffff")){
       int fingerID = theOscMessage.get(0).intValue();
       float x = theOscMessage.get(1).floatValue();
       float y = theOscMessage.get(2).floatValue();
       float z = theOscMessage.get(3).floatValue();
-      int area = theOscMessage.get(4).intValue();
+      //int area = theOscMessage.get(4).intValue();
       blobs[fingerID].isActive = true;
       blobs[fingerID].position = new PVector(x,y,z);
-      blobs[fingerID].area = area;
-      //println(" "+fingerID+" ("+x+","+y+","+z+") "+area);
-    }
-  } else if(theOscMessage.checkAddrPattern("/addBlob")){
-    if(theOscMessage.checkTypetag("i")){
-      int fingerID = theOscMessage.get(0).intValue();
-      blobs[fingerID].isActive = true;
+      //blobs[fingerID].area = area;
     }
   } else if(theOscMessage.checkAddrPattern("/removeBlob")){
     if(theOscMessage.checkTypetag("i")){
@@ -155,5 +153,20 @@ void oscEvent(OscMessage theOscMessage) {
     }
   }
   
+}
+
+void keyPressed() {
+  println(key);
+  if (key == '0') {
+    status = 0;
+  } else if(key == '1') {
+    status = 1;
+  } else if(key == '2'){
+    status = 2;
+  } else if(key == '3'){
+    status = 3;
+  } else if(key == '4'){
+    status = 4;
+  }
 }
 

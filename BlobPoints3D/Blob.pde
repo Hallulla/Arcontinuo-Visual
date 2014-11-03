@@ -9,4 +9,9 @@ public class Blob{
     position = _position;
     isActive = _isActive;
   }
+  public void Reset(){
+    area = 0;
+    position = new PVector(0,0,0);
+    isActive = false;
+  }
 } 
