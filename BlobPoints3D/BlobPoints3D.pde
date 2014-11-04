@@ -9,6 +9,7 @@ AudioInput in;
 FFT fftLog;
 
 int maxWaves = 20;
+int lastWaveIndex = 0;
 Wave[] waves;
 float[][] points;
 int pointsWidth = 4*24;
@@ -21,6 +22,10 @@ Blob[] blobs;
 
 int status = 0; 
 
+int NextWaveIndex(){
+  lastWaveIndex = (lastWaveIndex + 1 >= maxWaves) ? 0 : lastWaveIndex + 1;
+  return lastWaveIndex;
+}
 void setup() {
   
   size(1024,768,P3D);
@@ -55,6 +60,8 @@ float perspX = width/2, perspY = height/2;
 int drawPointsW = 18;
 
 int frame = 0;
+float w = 140;
+float h = w*5f;
 void draw() {
   background(0);
   smooth();
@@ -83,9 +90,8 @@ void draw() {
   }
   camera(perspX,perspY, (height/2) / tan(PI/6), width/2, height/2, 0, 0, 1, 0);
   translate(width/2, height/2, -100);
-  float w = 140;
-  float h = w*5f;
-  DrawEllipses(w,h,drawPointsW);
+  
+  DrawEllipses(drawPointsW);
   RefreshWaves();
   translate(-width/2, -height/2, -100);
   server.sendScreen();
@@ -97,7 +103,7 @@ void RefreshWaves(){
     waves[i].Refresh();
 }
 
-void DrawEllipses(float w, float h, int drawPointsWidth){
+void DrawEllipses(int drawPointsWidth){
   noStroke();
   fill(255);
   for(int x = pointsWidth/2 - drawPointsWidth/2;x < pointsWidth/2 + drawPointsWidth/2; x++){
@@ -110,7 +116,7 @@ void DrawEllipses(float w, float h, int drawPointsWidth){
       int maxBlobIndex = -1;
       for(int i = 0; i < 10; i++){
         if (blobs[i].isActive){
-          float d = DistanceFromBlob(xPoint,yPoint,i,w,h);
+          float d = DistanceFromBlob(xPoint,yPoint,i);
           float pf = PressFunction(d,100*blobs[i].position.z,100*blobs[i].position.z);
           if(pf > maxPress){
             maxBlobIndex = i;
@@ -135,7 +141,7 @@ float PressFunction(float d,float maxPress, float maxRatio){
   } 
 }
 
-float DistanceFromBlob(float x1, float y1, int blobID, float w, float h){
+float DistanceFromBlob(float x1, float y1, int blobID){
   if (blobs[blobID].isActive){
     float x2 = blobs[blobID].position.x*w -w/2;
     float y2 = blobs[blobID].position.y*h -h/2;
@@ -158,7 +164,7 @@ void oscEvent(OscMessage theOscMessage) {
       float z = theOscMessage.get(3).floatValue();
       //int area = theOscMessage.get(4).intValue();
       blobs[fingerID].isActive = true;
-      blobs[fingerID].setPosition(new PVector(x,y,z),waves[int(random(maxWaves))]);
+      blobs[fingerID].setPosition(new PVector(x,y,z),waves[NextWaveIndex()]);
       
       //blobs[fingerID].area = area;
     }

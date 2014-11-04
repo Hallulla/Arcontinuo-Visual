@@ -14,10 +14,9 @@ public class Blob{
   
   public void setPosition(PVector newPosition, Wave wave){
     position = newPosition;
-    println(distance(lastWavePosition,newPosition));
-    if(distance(lastWavePosition,newPosition) > .1f){
+    if(distance(lastWavePosition,newPosition) > .05f){
       lastWavePosition = newPosition;
-      wave.Init(newPosition);
+      wave.Init(BlobTo3DCoordenate(newPosition));
     }
   }
   float distance(PVector a, PVector b){
@@ -27,5 +26,10 @@ public class Blob{
     area = 0;
     position = new PVector(0,0,0);
     isActive = false;
+  }
+  
+  PVector BlobTo3DCoordenate(PVector blobCoord){
+    return new PVector(blobCoord.x*w -w/2,blobCoord.y*h - h/2,blobCoord.z*100f);
+    
   }
 } 
