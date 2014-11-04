@@ -8,7 +8,8 @@ Minim minim;
 AudioInput in;
 FFT fftLog;
 
-
+int maxWaves = 20;
+Wave[] waves;
 float[][] points;
 int pointsWidth = 4*24;
 int pointsHeight = 3*24;
@@ -21,7 +22,10 @@ Blob[] blobs;
 int status = 0; 
 
 void setup() {
+  
   size(1024,768,P3D);
+  frameRate(60);
+  
   minim = new Minim(this);
   in = minim.getLineIn();
   fftLog = new FFT(in.bufferSize(),in.sampleRate());
@@ -32,7 +36,10 @@ void setup() {
     for(int j = 0; j < pointsHeight; j++)
       points[i][j] = 0;
   
-  frameRate(60);
+  waves = new Wave[maxWaves];
+  for(int i = 0; i < maxWaves; i++){
+    waves[i] = new Wave();
+  }
   
   oscP5 = new OscP5(this,10001);
   myRemoteLocation = new NetAddress("127.0.0.1",10001);
@@ -70,15 +77,24 @@ void draw() {
       drawPointsW ++;
     } 
 
+  } else if(status == 4){
+    
+    
   }
   camera(perspX,perspY, (height/2) / tan(PI/6), width/2, height/2, 0, 0, 1, 0);
   translate(width/2, height/2, -100);
   float w = 140;
   float h = w*5f;
   DrawEllipses(w,h,drawPointsW);
+  RefreshWaves();
   translate(-width/2, -height/2, -100);
   server.sendScreen();
   frame++;
+}
+
+void RefreshWaves(){
+  for(int i = 0; i < maxWaves; i++)
+    waves[i].Refresh();
 }
 
 void DrawEllipses(float w, float h, int drawPointsWidth){
@@ -105,7 +121,6 @@ void DrawEllipses(float w, float h, int drawPointsWidth){
       float zTranslatePress = (maxBlobIndex != -1) ? -maxPress : 0;
       float zTranslateCurve = -pow((y-35)*.2f,2f);
       translate(0,0,zTranslatePress+zTranslateCurve);
-      
       ellipse((x-(pointsWidth/2))*10,(y-(pointsHeight/2))*10,3,3);
       translate(0,0,-zTranslatePress-zTranslateCurve);
     }
@@ -143,7 +158,8 @@ void oscEvent(OscMessage theOscMessage) {
       float z = theOscMessage.get(3).floatValue();
       //int area = theOscMessage.get(4).intValue();
       blobs[fingerID].isActive = true;
-      blobs[fingerID].position = new PVector(x,y,z);
+      blobs[fingerID].setPosition(new PVector(x,y,z),waves[int(random(maxWaves))]);
+      
       //blobs[fingerID].area = area;
     }
   } else if(theOscMessage.checkAddrPattern("/removeBlob")){
