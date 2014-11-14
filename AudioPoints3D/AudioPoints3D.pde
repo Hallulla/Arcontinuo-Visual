@@ -25,7 +25,9 @@ void setup() {
   minim = new Minim(this);
   in = minim.getLineIn();
   fftLog = new FFT(in.bufferSize(),in.sampleRate());
-  fftLog.logAverages( 22, 3 );
+  fftLog.logAverages( 22, 6 );
+  println(fftLog.avgSize());
+  
   
   points = new float[pointsWidth][pointsHeight];
   for(int i = 0; i < pointsWidth; i++)
@@ -53,7 +55,10 @@ void draw() {
   translate(width/2, height/2, -100);
   noStroke();
   fill(255);
-  ShiftPoints();
+  
+  if(frame % 2 == 0)
+    ShiftPoints();
+    
   FillFirstColumnWithVolume();
   DrawEllipsesFromVolume();
   server.sendScreen();
@@ -62,9 +67,7 @@ void draw() {
 void FillFirstColumnWithVolume(){
   fftLog.forward( in.mix );
   for(int y = 0;y < fftLog.avgSize(); y++){
-    
-    points[0][2*y] = fftLog.getAvg(y);
-    points[0][2*y+1] = fftLog.getAvg(y);
+    points[0][y] = fftLog.getAvg(y);
   }
 }
 void ShiftPoints(){
