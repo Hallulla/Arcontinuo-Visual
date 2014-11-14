@@ -70,12 +70,12 @@ void draw() {
     perspY = lerp(perspY,height/2,1/60f);
     drawPointsW = 18;
   } else if(status == 1){
-    perspX = lerp(perspX,width,1/60f);
-    perspY = lerp(perspY,height/2,1/60f);
+    perspX = lerp(perspX,width*.8f,1/60f);
+    perspY = lerp(perspY,height*.5f,1/60f);
     drawPointsW = 18;
   } else if(status == 2){
-    perspX = lerp(perspX,0,1/60f);
-    perspY = lerp(perspY,0,1/60f);
+    perspX = lerp(perspX,width*.2f,1/60f);
+    perspY = lerp(perspY,height*.5f,1/60f);
     drawPointsW = 18;
   } else if(status == 3){
     perspX = lerp(perspX,width/2,1/60f);
@@ -89,6 +89,7 @@ void draw() {
     
   }
   camera(perspX,perspY, (height/2) / tan(PI/6), width/2, height/2, 0, 0, 1, 0);
+  ortho(0, width, 0, height); 
   translate(width/2, height/2, -100);
   
   DrawEllipses(drawPointsW);
