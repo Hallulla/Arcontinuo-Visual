@@ -123,16 +123,43 @@ void DrawEllipses(int drawPointsWidth){
             maxBlobIndex = i;
             maxPress = pf; 
           }
-        }
+        } 
       }
+      
+      float minDistanceWaves = MinDistanceWaves(xPoint,yPoint);
+      
       float zTranslatePress = (maxBlobIndex != -1) ? -maxPress : 0;
       float zTranslateCurve = -pow((y-35)*.2f,2f);
-      translate(0,0,zTranslatePress+zTranslateCurve);
-      ellipse((x-(pointsWidth/2))*10,(y-(pointsHeight/2))*10,3,3);
-      translate(0,0,-zTranslatePress-zTranslateCurve);
+      float r = PressFunction(minDistanceWaves,1,30);
+      float zTranslateTotal = zTranslatePress+zTranslateCurve;
+     /* if(zTranslateWaves != 0 && zTranslatePress != 0 && zTranslateWaves != 9999999){
+        println("press "+zTranslatePress); 
+        println("waves "+zTranslateWaves);
+      }*/
+      translate(0,0,zTranslateTotal);
+      ellipse((x-(pointsWidth/2))*10,(y-(pointsHeight/2))*10,3*(1+r),3*(1+r));
+      translate(0,0,-zTranslateTotal);
     }
   }
 }
+float MinDistanceWaves(float x1, float y1){
+  float min = 9999999;
+  for(int i = 0; i < maxWaves; i++){
+    if(waves[i].isActive){
+      float dPointCenter = distance(new PVector(x1,y1),waves[i].center);
+      float deltaR = abs(dPointCenter - waves[i].r);
+      if(deltaR < min){
+        min = deltaR;
+      }
+      
+    }
+  }
+  return min;
+}
+
+float distance(PVector a, PVector b){
+    return sqrt(pow(b.x - a.x,2) + pow(b.y - a.y,2) + pow(b.z - a.z,2));
+  }
 
 float PressFunction(float d,float maxPress, float maxRatio){
   if(d < 0 || d > maxRatio){
