@@ -66,35 +66,33 @@ void draw() {
   background(0);
   smooth();
   if(status == 0){
-    perspX = lerp(perspX,width/2,1/60f);
-    perspY = lerp(perspY,height/2,1/60f);
+    perspX = lerp(perspX,0,2/60f);
+    perspY = lerp(perspY,0,1/60f);
     drawPointsW = 18;
   } else if(status == 1){
-    perspX = lerp(perspX,width*.8f,1/60f);
-    perspY = lerp(perspY,height*.5f,1/60f);
+    perspX = lerp(perspX,-width,1/60f);
+    perspY = lerp(perspY,height*.1f,2/60f);
     drawPointsW = 18;
-  } else if(status == 2){
-    perspX = lerp(perspX,width*.2f,1/60f);
-    perspY = lerp(perspY,height*.5f,1/60f);
-    drawPointsW = 18;
-  } else if(status == 3){
-    perspX = lerp(perspX,width/2,1/60f);
-    perspY = lerp(perspY,height/2,1/60f);
-    if(drawPointsW < pointsWidth){
-      drawPointsW ++;
-    } 
-
-  } else if(status == 4){
-    
-    
   }
-  camera(perspX,perspY, (height/2) / tan(PI/6), width/2, height/2, 0, 0, 1, 0);
+  
+  camera(width/2,height/2, (height/2) / tan(PI/6), width/2, height/2, 0, 0, 1, 0);
   ortho(0, width, 0, height); 
+  float yRotation = (perspX/(float)width)*PI/4;
+  float xRotation = (perspY/(float)height)*PI/4;
+  rotateY(yRotation);
+  rotateX(xRotation);
   translate(width/2, height/2, -100);
   
   DrawEllipses(drawPointsW);
-  RefreshWaves();
+  if(status == 1){
+    RefreshWaves();
+  }
+  
+  
   translate(-width/2, -height/2, -100);
+  rotateX(-xRotation);
+  rotateY(-yRotation);
+  
   server.sendScreen();
   frame++;
 }
@@ -130,14 +128,17 @@ void DrawEllipses(int drawPointsWidth){
       
       float zTranslatePress = (maxBlobIndex != -1) ? -maxPress : 0;
       float zTranslateCurve = -pow((y-35)*.2f,2f);
-      float r = PressFunction(minDistanceWaves,1,30);
-      float zTranslateTotal = zTranslatePress+zTranslateCurve;
+      float zTranslateWave = -PressFunction(minDistanceWaves,1,30)*20f;
+      float zTranslateTotal = zTranslatePress+zTranslateCurve + zTranslateWave;
+      
+      float rWaves = PressFunction(minDistanceWaves,1,30);
+      float rTotal = rWaves + (-.1f*zTranslatePress)*.2f;
      /* if(zTranslateWaves != 0 && zTranslatePress != 0 && zTranslateWaves != 9999999){
         println("press "+zTranslatePress); 
         println("waves "+zTranslateWaves);
       }*/
       translate(0,0,zTranslateTotal);
-      ellipse((x-(pointsWidth/2))*10,(y-(pointsHeight/2))*10,3*(1+r),3*(1+r));
+      ellipse((x-(pointsWidth/2))*10,(y-(pointsHeight/2))*10,7-2*rTotal,7-2*rTotal);
       translate(0,0,-zTranslateTotal);
     }
   }

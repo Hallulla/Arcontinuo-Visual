@@ -13,8 +13,8 @@ void setup() {
   frameRate(60);
   oscP5 = new OscP5(this, 10001);
   myRemoteLocation = new NetAddress("127.0.0.1", 10001);
-
-
+  PFont font = loadFont("Menlo-Regular-11.vlw"); 
+  textFont(font,20);
   server = new SyphonServer(this, "Processing Syphon");
 
 
@@ -36,12 +36,12 @@ void DrawCircles(float w, float h) {
     if (blobs[i].isActive) {
       fill(0, 0, 0, 0);
       stroke(255);
-      strokeWeight(4);
+      strokeWeight(2);
       float x = blobs[i].position.x*w;
       float y = blobs[i].position.y*h;
       float r = blobs[i].position.z*100f;
       ellipse(x, y, r, r);
-      textSize(16);
+      textSize(11);
       fill(255);
       text((i+1), x+r*.5f, y+r*.7f);
     }
@@ -50,6 +50,7 @@ void DrawCircles(float w, float h) {
 }
 void draw() {
   background(0);
+  smooth();
   float w = 140;
   float h = w*5f;
   DrawRectangle(w, h);
