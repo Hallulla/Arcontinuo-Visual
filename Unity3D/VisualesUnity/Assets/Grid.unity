@@ -138,6 +138,7 @@ GameObject:
   - 92: {fileID: 252122242}
   - 124: {fileID: 252122241}
   - 81: {fileID: 252122240}
+  - 114: {fileID: 252122247}
   - 114: {fileID: 252122246}
   - 114: {fileID: 252122245}
   m_Layer: 0
@@ -237,6 +238,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07df6674c17984b8fb3f457115b682f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &252122247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 252122239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8313647243af146dab989a31c1f04de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syphonClients: []
+  nullTexture: {fileID: 0}
 --- !u!1 &499553134
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,7 +390,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 664955385}
-  m_Mesh: {fileID: 1384930089}
+  m_Mesh: {fileID: 1323698634}
 --- !u!4 &664955389
 Transform:
   m_ObjectHideFlags: 0
@@ -429,7 +443,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!43 &1384930089
+--- !u!43 &1323698634
 Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
