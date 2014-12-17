@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\LineWaves\Scripts\Other\MouseOrbit.js" />
+     <Compile Include="Assets\Scripts\OSCListener.js" />
      <None Include="Assets\Resources\SyphonShaders\Particle AddSmooth.shader" />
      <None Include="Assets\Resources\SyphonShaders\AlphaTest-BumpSpec01.shader" />
      <None Include="Assets\Resources\SyphonShaders\Particle AddBehind.shader" />

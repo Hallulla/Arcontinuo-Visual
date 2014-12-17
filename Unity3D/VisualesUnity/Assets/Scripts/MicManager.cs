@@ -106,10 +106,13 @@ public class MicManager : MonoBehaviour
     public void StartMicListener()
     {
 		
-		print("Start Mic Listener");
-        audio.clip = Microphone.Start("Built-in Microphone", true, 999, FREQUENCY);
+		print("Mic Devices");
+		for(int i = 0; i < Microphone.devices.Length;i++){
+			print(Microphone.devices[i]);
+		}
+		audio.clip = Microphone.Start("Built-in Microphone", true, 999, FREQUENCY);
         // HACK - Forces the function to wait until the microphone has started, before moving onto the play function.
-        while (!(Microphone.GetPosition("Built-in Microphone") > 0)){}
+		while (!(Microphone.GetPosition("Built-in Microphone") > 0)){}
 		
 		
 		audio.Play();
