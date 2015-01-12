@@ -7,7 +7,7 @@ public class MicManager : MonoBehaviour
 {
 
     private const int FREQUENCY = 44100;    // Wavelength, I think.
-    private const int SAMPLECOUNT = 128;   // Sample Count.
+    private const int SAMPLECOUNT = 64;   // Sample Count.
     private const float REFVALUE = 0.1f;    // RMS value for 0 dB.
 
     private const float THRESHOLD = 0.02f;  // Minimum amplitude to extract pitch (recieve anything)
@@ -35,7 +35,8 @@ public class MicManager : MonoBehaviour
 
     private float[] samples;           // Samples
 
-    private float[] spectrum;          // Spectrum
+    public float[] spectrum;          // Spectrum
+	public int maxN;
 
     private List<float> dbValues;      // Used to average recent volume.
 
@@ -110,9 +111,9 @@ public class MicManager : MonoBehaviour
 		for(int i = 0; i < Microphone.devices.Length;i++){
 			print(Microphone.devices[i]);
 		}
-		audio.clip = Microphone.Start("Built-in Microphone", true, 999, FREQUENCY);
+		audio.clip = Microphone.Start("Built-in Input", true, 999, FREQUENCY);
         // HACK - Forces the function to wait until the microphone has started, before moving onto the play function.
-		while (!(Microphone.GetPosition("Built-in Microphone") > 0)){}
+		while (!(Microphone.GetPosition("Built-in Input") > 0)){}
 		
 		
 		audio.Play();
@@ -121,7 +122,7 @@ public class MicManager : MonoBehaviour
 	
 	public void EndMicListener(){
 		print("End Mic Listener");
-		Microphone.End("Built-in Microphone");
+		Microphone.End("Built-in Input");
 	}
 
 
@@ -169,13 +170,14 @@ public class MicManager : MonoBehaviour
 
         // Gets the sound spectrum.
 
-        audio.GetSpectrumData(spectrum, 0, FFTWindow.BlackmanHarris);
+        audio.GetSpectrumData(spectrum, 0, FFTWindow.Blackman);
 
         float maxV = 0;
 
-        int maxN = 0;
+        maxN = 0;
 
 
+	
 
         // Find the highest sample.
 

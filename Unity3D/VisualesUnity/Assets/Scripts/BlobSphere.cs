@@ -28,18 +28,25 @@ public class BlobSphere : MonoBehaviour {
 			if(OSCListener.updateBlobMessage != null){
 				if(StageManager.currentStage == 2)
 					vectorGridForce.enabled = true;
-				else
+				else 
 					vectorGridForce.enabled = false;
 
 				float oscBlobID = (int)OSCListener.updateBlobMessage.Values[0];
 				if(oscBlobID == blobID){
-					float x = (float)OSCListener.updateBlobMessage.Values[1];
-					float y = (float)OSCListener.updateBlobMessage.Values[2];
-					float z = (float)OSCListener.updateBlobMessage.Values[3];
-//					print(x+","+y+","+z);
-					targetPosition = new Vector3(.9f*(-1f+2f*x),-.7f*(-1f+2f*y),.1f);
-					targetScale = Vector3.one*.15f*z;
-					targetColor = Color.Lerp(bottomColor,topColor,1-y);
+					float x = (float)OSCListener.updateBlobMessage.Values[1]/200f;
+					float y = (float)OSCListener.updateBlobMessage.Values[2]/(54f*20f);
+					float z = (float)OSCListener.updateBlobMessage.Values[3]/10000f;
+					if(z > 0){
+						print(x+","+y+","+z);
+						targetPosition = new Vector3(.9f*(-1f+2f*x),-.7f*(-1f+2f*y),.1f);
+						targetScale = Vector3.one*.15f*z;
+						targetColor = Color.Lerp(bottomColor,topColor,1-y);
+					} else {
+						targetPosition = myTransform.position;
+						targetScale = Vector3.zero;
+						targetColor = myRenderer.material.color;
+						vectorGridForce.enabled = false;
+					}
 				}
 			}
 		} else {

@@ -53,12 +53,13 @@
      <Compile Include="Assets\LineWaves\Scripts\Other\meanPos.cs" />
      <Compile Include="Assets\Scripts\BlobSphere.cs" />
      <Compile Include="Assets\Scripts\BlobSphereManager.cs" />
+     <Compile Include="Assets\Scripts\GenerateMountainsFromAudio.cs" />
      <Compile Include="Assets\Scripts\MicManager.cs" />
      <Compile Include="Assets\Scripts\MicVolumeDetector.cs" />
      <Compile Include="Assets\Scripts\OSCListener.cs" />
      <Compile Include="Assets\Scripts\Osc.cs" />
+     <Compile Include="Assets\Scripts\StageManager.cs" />
      <Compile Include="Assets\Scripts\UDPPacketIO.cs" />
-     <Compile Include="Assets\StageManager.cs" />
      <Compile Include="Assets\VectorGrid\Demo\Scripts\InteractDemoManager.cs" />
      <Compile Include="Assets\VectorGrid\Demo\Scripts\ScrollDemoManager.cs" />
      <Compile Include="Assets\VectorGrid\Demo\Scripts\SphereDemoManager.cs" />

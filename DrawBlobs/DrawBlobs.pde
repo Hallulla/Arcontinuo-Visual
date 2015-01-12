@@ -37,13 +37,16 @@ void DrawCircles(float w, float h) {
       fill(0, 0, 0, 0);
       stroke(255);
       strokeWeight(2);
+      println("x"+blobs[i].position.x+" y"+blobs[i].position.y+" z"+blobs[i].position.z);
       float x = blobs[i].position.x*w;
       float y = blobs[i].position.y*h;
       float r = blobs[i].position.z*100f;
+      
+      
       ellipse(x, y, r, r);
       textSize(11);
       fill(255);
-      text((i+1), x+r*.5f, y+r*.7f);
+      text((i), x+r*.5f, y+r*.7f);
     }
   }
   translate(-(width/2 - w/2), -(height/2 - h/2));
@@ -61,19 +64,23 @@ void draw() {
 
 void oscEvent(OscMessage theOscMessage) {
   //print(theOscMessage.addrPattern());
-  //print(" "+theOscMessage.typetag());
+  //println(" "+theOscMessage.typetag());
 
   if (theOscMessage.checkAddrPattern("/updateBlob")) {
-    if (theOscMessage.checkTypetag("ifffi")) {
+    if (theOscMessage.checkTypetag("ifffi") || theOscMessage.checkTypetag("ifff")) {
 
       int fingerID = theOscMessage.get(0).intValue();
       float x = theOscMessage.get(1).floatValue();
       float y = theOscMessage.get(2).floatValue();
       float z = theOscMessage.get(3).floatValue();
-      int area = theOscMessage.get(4).intValue();
-      blobs[fingerID].isActive = true;
-      blobs[fingerID].position = new PVector(x, y, z);
-      blobs[fingerID].area = area;
+      if(z > 0){
+      //int area = theOscMessage.get(3).intValue();
+        blobs[fingerID].isActive = true;
+        blobs[fingerID].position = new PVector(x/200f, y/(54f*20f), z/9000f);
+        blobs[fingerID].area = 1;
+      } else {
+        blobs[fingerID].isActive = false;
+      }
       //println(" "+fingerID+" ("+x+","+y+","+z+") "+area);
     }
   } else if (theOscMessage.checkAddrPattern("/addBlob")) {

@@ -186,15 +186,18 @@ void oscEvent(OscMessage theOscMessage) {
   //print(" "+theOscMessage.typetag());
   
   if(theOscMessage.checkAddrPattern("/updateBlob")){
-    if(theOscMessage.checkTypetag("ifffi") || theOscMessage.checkTypetag("iffff")){
+    if(theOscMessage.checkTypetag("ifffi") || theOscMessage.checkTypetag("iffff") || theOscMessage.checkTypetag("ifff")){
       int fingerID = theOscMessage.get(0).intValue();
       float x = theOscMessage.get(1).floatValue();
       float y = theOscMessage.get(2).floatValue();
       float z = theOscMessage.get(3).floatValue();
       //int area = theOscMessage.get(4).intValue();
       blobs[fingerID].isActive = true;
-      blobs[fingerID].setPosition(new PVector(x,y,z),waves[NextWaveIndex()]);
-      
+      if(theOscMessage.checkTypetag("ifff")){
+        blobs[fingerID].setPosition(new PVector(x/200f, y/(54f*20f), z/9000f),waves[NextWaveIndex()]);
+      } else {
+        blobs[fingerID].setPosition(new PVector(x,y,z),waves[NextWaveIndex()]);
+      }
       //blobs[fingerID].area = area;
     }
   } else if(theOscMessage.checkAddrPattern("/removeBlob")){
