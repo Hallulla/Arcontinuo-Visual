@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400000}
+  - 114: {fileID: 11400000}
+  m_Layer: 0
+  m_Name: Noise
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400000
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 26.0274391, y: -11.2336464, z: -.798583984}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21784c1177b64c568dc7d90b0a662c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floats:
+  - 0
+  - -9.70950127
+  - -9.70936966
+  - -10.1862192
+  - -9.70884705
+  - -10.4074621
+  - -10.1850414
+  - -10.5524073
+  - -9.70674992
+  - -10.6602898
+  - -10.4041843
+  - -10.7456293
+  - -10.180315
+  - -10.8160782
+  - -10.5459661
+  - -10.8756599
+  - -9.6983242
+  - -10.9273596
+  - -10.6496077
+  - -10.9724274
+  - -10.3909693
+  - -11.0124369
+  - -10.7296057
+  - -11.0478916
+  - -10.1611996
+  - -11.0798683
+  - -10.7935867
+  - -11.1085749
+  - -10.5198069
+  - -11.1345835
+  - -10.8455381
+  - -11.1580315
+  - -9.66393948
+  - -11.179533
+  - -10.8884058
+  - -11.1988077
+  - -10.6057711
+  - -11.2164001
+  - -10.9233885
+  - -11.2320795
+  - -10.3363991
+  - -11.2464647
+  - -10.9519997
+  - -11.2591839
+  - -10.6629553
+  - -11.2705832
+  - -10.9746733
+  - -11.2805605
+  - -10.0810461
+  - -11.2894697
+  - -10.9924011
+  - -11.2970438
+  - -10.6984138
+  - -11.3036041
+  - -11.0052919
+  - -11.3088102
+  - -10.4079914
+  - -11.3131104
+  - -11.0137987
+  - -11.3162279
+  - -10.7153282
+  - -11.3183584
+  - -11.0179186
+  - 0
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 100000}
+  m_IsPrefabParent: 1
+  m_IsExploded: 1

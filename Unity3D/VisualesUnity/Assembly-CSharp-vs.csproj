@@ -46,11 +46,14 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CameraMovement.cs" />
+     <Compile Include="Assets\GenerateLightSurface.cs" />
      <Compile Include="Assets\LineWaves\Scripts\LineWave.cs" />
      <Compile Include="Assets\LineWaves\Scripts\LineWaveCollider.cs" />
      <Compile Include="Assets\LineWaves\Scripts\Other\guiE3.cs" />
      <Compile Include="Assets\LineWaves\Scripts\Other\guiMenu.cs" />
      <Compile Include="Assets\LineWaves\Scripts\Other\meanPos.cs" />
+     <Compile Include="Assets\SaveFLoats.cs" />
      <Compile Include="Assets\Scripts\BlobSphere.cs" />
      <Compile Include="Assets\Scripts\BlobSphereManager.cs" />
      <Compile Include="Assets\Scripts\GenerateMountainsFromAudio.cs" />

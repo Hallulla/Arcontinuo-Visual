@@ -5,6 +5,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(AudioSource))]
 public class MicManager : MonoBehaviour
 {
+//	public SaveFLoats saveFLoats;
 
     private const int FREQUENCY = 44100;    // Wavelength, I think.
     private const int SAMPLECOUNT = 64;   // Sample Count.
@@ -87,7 +88,10 @@ public class MicManager : MonoBehaviour
 
         DeriveBlow();
 
-
+//		if(Input.GetKeyDown(KeyCode.Space)){
+//			saveFLoats.floats = spectrum;
+//			Time.timeScale = 0;
+//		}
 
         // Update the meter display.
 
@@ -170,7 +174,7 @@ public class MicManager : MonoBehaviour
 
         // Gets the sound spectrum.
 
-        audio.GetSpectrumData(spectrum, 0, FFTWindow.Blackman);
+        audio.GetSpectrumData(spectrum, 0, FFTWindow.BlackmanHarris);
 
         float maxV = 0;
 
