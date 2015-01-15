@@ -76,7 +76,7 @@ void draw() {
   }
   
   camera(width/2,height/2, (height/2) / tan(PI/6), width/2, height/2, 0, 0, 1, 0);
-  ortho(0, width, 0, height); 
+  ortho(-80, width+80, -80, height+80); 
   float yRotation = (perspX/(float)width)*PI/4;
   float xRotation = (perspY/(float)height)*PI/4;
   rotateY(yRotation);
@@ -84,7 +84,7 @@ void draw() {
   translate(width/2, height/2, -100);
   
   DrawEllipses(drawPointsW);
-  if(status == 1){
+  if(status == 2){
     RefreshWaves();
   }
   
@@ -124,6 +124,7 @@ void DrawEllipses(int drawPointsWidth){
         } 
       }
       
+      
       float minDistanceWaves = MinDistanceWaves(xPoint,yPoint);
       
       float zTranslatePress = (maxBlobIndex != -1) ? -maxPress : 0;
@@ -138,6 +139,13 @@ void DrawEllipses(int drawPointsWidth){
         println("waves "+zTranslateWaves);
       }*/
       translate(0,0,zTranslateTotal);
+      if(status == 2){
+         
+        fill(255,255,255);
+      } else {
+        float rPress = -zTranslatePress/60f;
+        fill(255-220*rPress,255-204*rPress,255-45*rPress);
+      }
       ellipse((x-(pointsWidth/2))*10,(y-(pointsHeight/2))*10,7-2*rTotal,7-2*rTotal);
       translate(0,0,-zTranslateTotal);
     }

@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f7da9292270e452390cad8d87ae6424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  simulator: 1
   blobID: 0
   on: 0
   topColor: {r: 1, g: .925490201, b: 0, a: 1}

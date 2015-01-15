@@ -80,7 +80,7 @@ void DrawEllipsesFromVolume(){
     for(int y = 0;y < pointsHeight; y++){
       float zTranslate = points[x][y]*20;
       translate(0,0,zTranslate);
-      ellipse((x-(pointsWidth/2))*10,(y-(pointsHeight/2))*10,3,3);
+      ellipse((x-(pointsWidth/2))*11,(y-(pointsHeight/2))*11,6,6);
       translate(0,0,-zTranslate);
     }
   }
